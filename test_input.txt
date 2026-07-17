@@ -1,6 +1,0 @@
-EnrollmentID,StudentID,CourseID,Grade
-1,1,CS101,A
-2,2,CS101,B
-3,3,CS102,A
-4,1,CS102,B
-5,2,CS103,A
