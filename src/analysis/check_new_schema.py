@@ -1,23 +1,3 @@
-"""
-Schema Verification Script
-===========================
-Verifies that the processed CSV files match the redesigned schema.
-
-Checks:
-  ✓ Department exists
-  ✓ Class exists
-  ✓ Teacher exists
-  ✓ Student references Class
-  ✓ Course references Teacher
-  ✓ Course references Department
-  ✓ Enrollment has MidtermScore
-  ✓ Enrollment has FinalScore
-  ✓ Enrollment has TotalScore
-  ✓ Enrollment has LetterGrade
-  ✓ Feedback no longer exists in processed
-  ✓ Grades no longer exists in processed
-"""
-
 import pandas as pd
 from pathlib import Path
 

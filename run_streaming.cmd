@@ -1,0 +1,1 @@
+hadoop jar D:\hadoop\hadoop-3.3.6\share\hadoop\tools\lib\hadoop-streaming-3.3.6.jar -D mapreduce.framework.name=local -files mapper.py,reducer.py -input /input/test_input.txt -output /output/debug_job -mapper py mapper.py -reducer py reducer.py -verbose
