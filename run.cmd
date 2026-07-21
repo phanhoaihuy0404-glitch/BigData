@@ -12,6 +12,7 @@ REM =============================================
 
 set HADOOP_HOME=C:\hadoop\hadoop-3.3.6
 set JAVA_HOME=C:\PROGRA~1\Java\JRE18~1.0_4
+set PYTHON=C:\Users\Admin\AppData\Local\Programs\Python\Python312\python.exe
 
 set MAPPER=%1
 set REDUCER=%2
@@ -45,8 +46,8 @@ REM Run Hadoop Streaming
     -file "%REDUCER%" ^
     -input "%INPUT%" ^
     -output "%OUTPUT%" ^
-    -mapper "python %MAPPER%" ^
-    -reducer "python %REDUCER%"
+    -mapper "%PYTHON% %MAPPER%" ^
+    -reducer "%PYTHON% %REDUCER%"
 
 echo ============================================
 if exist "%OUTPUT%\part-00000" (

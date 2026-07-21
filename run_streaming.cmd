@@ -7,6 +7,7 @@ setlocal enabledelayedexpansion
 REM ---- CONFIG ----
 set HADOOP_HOME=C:\hadoop\hadoop-3.3.6
 set JAVA_HOME=C:\PROGRA~1\Java\JRE18~1.0_4
+set PYTHON=C:\Users\Admin\AppData\Local\Programs\Python\Python312\python.exe
 set PATH=%PATH%;%HADOOP_HOME%\bin;%JAVA_HOME%\bin
 
 REM ---- PARAMETERS (with defaults) ----
@@ -47,8 +48,8 @@ REM Run Hadoop Streaming
     -file %REDUCER_SCRIPT% ^
     -input %INPUT_FILE% ^
     -output %OUTPUT_DIR% ^
-    -mapper "python %MAPPER_SCRIPT%" ^
-    -reducer "python %REDUCER_SCRIPT%"
+    -mapper "%PYTHON% %MAPPER_SCRIPT%" ^
+    -reducer "%PYTHON% %REDUCER_SCRIPT%"
 
 echo ============================================
 echo Job completed! Output saved to %OUTPUT_DIR%

@@ -1,27 +1,23 @@
-# TODO: Move mappers/reducers into job folder
+# Completed Tasks
 
-## ✅ Step 1: Create new job folders for external mapper/reducer pairs
+## ✅ Parser Import Fix
 
-- [x] `job/job/semester_count/mapper.py` + `reducer.py`
-- [x] `job/job/avg_midterm_per_course/mapper.py` + `reducer.py`
-- [x] `job/job/course_performance_analytics/mapper.py` + `reducer.py`
-- [x] `job/job/lowest_score_per_course/mapper.py` + `reducer.py`
-- [x] `job/job/pass_fail_per_course/mapper.py` + `reducer.py`
+- [x] Created `parser/__init__.py` and `parser/enrollment_parser.py` - wrapper module that delegates to the new `parser (1)/csv_parser.py`
+- [x] Fixed `sys.path.insert` path in all 8 mapper files to go 3 levels up (`..`, `..`, `..`) to project root
+- [x] Files updated: count_course, average_score, grade_distribution, highest_score, top_n_course, avg_midterm_per_course, course_performance_analytics, lowest_score_per_course, pass_fail_per_course
 
-## ✅ Step 2: Update run_all.cmd
+## ✅ Local Simulation Run (run_all.cmd)
 
-- [x] Fix PROJECT_ROOT path
-- [x] Add 5 new jobs to pipeline
-- [x] Fix Windows sort.exe memory issue (replaced with Python sort)
+- [x] All 10 jobs completed successfully
+- [x] Output files verified in `data/output/`
 
-## ✅ Step 3: Remove old mapper/reducer files from root level
+## ✅ Hadoop Streaming Fix
 
-- [x] Delete `mapper/` files (already moved)
-- [x] Delete `reducer/` files (already moved)
-- [x] Delete `semester_count.py` root file
+- [x] Added `PYTHON` variable with full path to `run.cmd` and `run_streaming.cmd`
+- [x] Changed `-mapper "python ..."` to `-mapper "%PYTHON% ..."` in both files
 
-## ✅ Step 4: Run tests and verify
+## ✅ Hadoop Streaming Job (count_course)
 
-- [x] Execute `run_all.cmd` to test all jobs
-- [x] All 10 jobs passed successfully!
-- [x] average_score.txt now has data (fixed sort issue)
+- [x] Job completed successfully - Map: 501 input records → 500 output, Reduce: 500 input → 50 output
+- [x] Output saved to `output/job_output/part-00000`
+- [x] Hadoop output matches Local Simulation output (50 course count records, identical values)
