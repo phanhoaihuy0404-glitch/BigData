@@ -1,29 +1,24 @@
 #!/usr/bin/env python3
-"""mapper/course_performance_analytics.py
+"""
+Mapper for Course performance analytics (multi-metrics).
 
-Hadoop Streaming - Course performance analytics (multi-metrics)
-
-Mapper output (composite value):
-  course_id\ttotal_score,1,<is_pass>,letter_grade
-
-Where:
-- is_pass = 1 if total_score >= 4.0 else 0
-- letter_grade is the raw letter (e.g., A, B, C...)
-
-Rules:
-- Read Enrollment rows from sys.stdin
-- Use EnrollmentParser.parse(line)
+Input : CSV line from Enrollment.csv
+Output: course_id<TAB>total_score,1,<is_pass>,letter_grade
 """
 
 import sys
+import os
 
-try:
-    from parser.enrollment_parser import EnrollmentParser
-except ImportError:
-    from parser.enrollment_parser import EnrollmentParser  # type: ignore
+# Ensure project root is in path so 'parser' module can be found
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+
+from parser.enrollment_parser import EnrollmentParser
 
 
 def main():
+    # Skip header line
+    first_line = sys.stdin.readline()
+    # Process the rest
     for line in sys.stdin:
         parsed = EnrollmentParser.parse(line)
         if not parsed:
@@ -38,8 +33,6 @@ def main():
 
         is_pass = 1 if total_score >= 4.0 else 0
 
-        # composite payload
-        # total_score,1,pass_flag,letter_grade
         sys.stdout.write(
             f"{course_id}\t{total_score},1,{is_pass},{letter_grade}\n"
         )

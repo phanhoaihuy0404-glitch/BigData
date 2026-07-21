@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
-"""reducer/semester_count.py
+"""
+Reducer for counting students per semester.
 
-Hadoop Streaming - Count students per semester
-
-Reducer (also usable as Combiner):
-- Input: semester\t1
-- Output: semester\tTOTAL
-
-Optimized for sorted input by key.
+Input : semester<TAB>1   (from mapper, sorted by semester)
+Output: semester<TAB>TOTAL
 """
 
 import sys

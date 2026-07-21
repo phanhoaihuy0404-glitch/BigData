@@ -1,26 +1,24 @@
 #!/usr/bin/env python3
-"""mapper/pass_fail_per_course.py
+"""
+Mapper for Pass/Fail statistics per course.
 
-Hadoop Streaming - Pass / Fail statistics per course
-
-Rules:
-- Pass if total_score >= 4.0 else Fail
-- Emit: course_id\tPass or course_id\tFail
-
-Mapper rules:
-- Read from sys.stdin
-- Use EnrollmentParser.parse(line)
+Input : CSV line from Enrollment.csv
+Output: course_id<TAB>Pass  or  course_id<TAB>Fail
 """
 
 import sys
+import os
 
-try:
-    from parser.enrollment_parser import EnrollmentParser
-except ImportError:
-    from parser.enrollment_parser import EnrollmentParser  # type: ignore
+# Ensure project root is in path so 'parser' module can be found
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+
+from parser.enrollment_parser import EnrollmentParser
 
 
 def main():
+    # Skip header line
+    first_line = sys.stdin.readline()
+    # Process the rest
     for line in sys.stdin:
         parsed = EnrollmentParser.parse(line)
         if not parsed:

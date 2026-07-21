@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
-"""mapper/semester_count.py
+"""
+Mapper for counting students per semester.
 
-Hadoop Streaming - Count students per semester
-
-Input : Enrollment.csv (9 columns) with header
-        EnrollmentID,StudentID,CourseID,Semester,Year,MidtermScore,FinalScore,TotalScore,LetterGrade
-Output: semester\t1
-
-Rules:
-- Read from sys.stdin
-- Parse CSV manually (no external dependencies)
-- Semester is at column index 3
+Input : CSV line from Enrollment.csv
+Output: semester<TAB>1
 """
 
 import sys

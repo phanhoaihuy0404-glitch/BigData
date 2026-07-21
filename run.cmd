@@ -6,8 +6,8 @@ REM Usage: run.cmd [mapper] [reducer] [input] [output]
 REM
 REM Examples:
 REM   run.cmd                          (default: semester_count)
-REM   run.cmd mapper/semester_count.py reducer/semester_count.py
-REM   run.cmd mapper/avg_midterm_per_course.py reducer/avg_midterm_per_course.py
+REM   run.cmd job/job/semester_count/mapper.py job/job/semester_count/reducer.py
+REM   run.cmd job/job/avg_midterm_per_course/mapper.py job/job/avg_midterm_per_course/reducer.py
 REM =============================================
 
 set HADOOP_HOME=C:\hadoop\hadoop-3.3.6
@@ -18,8 +18,8 @@ set REDUCER=%2
 set INPUT=%3
 set OUTPUT=%4
 
-if "%MAPPER%"=="" set MAPPER=mapper/semester_count.py
-if "%REDUCER%"=="" set REDUCER=reducer/semester_count.py
+if "%MAPPER%"=="" set MAPPER=job/job/semester_count/mapper.py
+if "%REDUCER%"=="" set REDUCER=job/job/semester_count/reducer.py
 if "%INPUT%"=="" set INPUT=data/processed/Enrollment.csv
 if "%OUTPUT%"=="" set OUTPUT=output/job_output
 

@@ -1,19 +1,9 @@
 #!/usr/bin/env python3
-"""reducer/avg_midterm_per_course.py
+"""
+Reducer for Average MidtermScore per course.
 
-Hadoop Streaming - Average MidtermScore per course
-
-Input format (key\tvalue) from mapper:
-  course_id\tmidterm_score,1
-
-Reducer:
-- For each course_id, sum midterm_score and counts
-- Compute average with proper float conversion
-- Print: course_id\tAVG (2 decimal places)
-
-Notes:
-- Handle malformed values via try/except
-- Optimized streaming reducer: assumes input is sorted by key
+Input : course_id<TAB>midterm_score,1   (from mapper, sorted by course_id)
+Output: course_id<TAB>AVG (2 decimal places)
 """
 
 import sys
@@ -48,7 +38,6 @@ def main():
             score = float(score_str)
             cnt = int(cnt_str)
         except (ValueError, TypeError):
-            # skip invalid records
             continue
 
         if current_course is None:
@@ -65,7 +54,7 @@ def main():
             sum_scores = 0.0
             count = 0
 
-        sum_scores += score * cnt  # cnt is expected to be 1
+        sum_scores += score * cnt
         count += cnt
 
     # flush last key

@@ -1,19 +1,9 @@
 #!/usr/bin/env python3
-"""reducer/pass_fail_per_course.py
+"""
+Reducer for Pass/Fail statistics per course.
 
-Hadoop Streaming - Pass / Fail statistics per course
-
-Input:
-  course_id\tPass
-  course_id\tFail
-
-Reducer output:
-When course_id changes, print:
-  course_id\tPass:{pass_count},Fail:{fail_count}
-
-Optimized reducer:
-- Assumes input is sorted by key (course_id)
-- Streams aggregation with current_course
+Input : course_id<TAB>Pass  or  course_id<TAB>Fail   (sorted by course_id)
+Output: course_id<TAB>Pass:<pass_count>,Fail:<fail_count>
 """
 
 import sys
@@ -46,12 +36,10 @@ def main():
             pass_count = 0
             fail_count = 0
 
-        # Count pass/fail
         if label == "Pass":
             pass_count += 1
         elif label == "Fail":
             fail_count += 1
-        # else: ignore malformed
 
     if current_course is not None:
         sys.stdout.write(

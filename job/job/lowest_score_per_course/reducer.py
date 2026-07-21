@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
-"""reducer/lowest_score_per_course.py
+"""
+Reducer for finding the lowest score per course.
 
-Hadoop Streaming - Lowest score of each course
-
-Input:
-  course_id\ttotal_score
-
-Reducer:
-- For each course_id, compute minimum total_score
-- Assumes input is sorted by key
-- Print when course changes:
-  course_id\tmin_score
+Input : course_id<TAB>total_score   (from mapper, sorted by course_id)
+Output: course_id<TAB>min_score
 """
 
 import sys

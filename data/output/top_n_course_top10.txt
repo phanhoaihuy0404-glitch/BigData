@@ -1,0 +1,12 @@
+Rank  CourseID       Enrollments 
+---------------------------------
+1     COURSE41       19          
+2     COURSE26       16          
+3     COURSE2        15          
+4     COURSE38       15          
+5     COURSE18       14          
+6     COURSE24       14          
+7     COURSE5        14          
+8     COURSE27       13          
+9     COURSE34       13          
+10    COURSE13       12          

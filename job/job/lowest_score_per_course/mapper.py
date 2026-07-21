@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
-"""mapper/lowest_score_per_course.py
+"""
+Mapper for finding the lowest score per course.
 
-Hadoop Streaming - Lowest score of each course
-
-Mapper:
-- Read Enrollment rows from sys.stdin
-- Use EnrollmentParser.parse(line)
-- Emit: course_id\ttotal_score
+Input : CSV line from Enrollment.csv
+Output: course_id<TAB>total_score
 """
 
 import sys
+import os
 
-try:
-    from parser.enrollment_parser import EnrollmentParser
-except ImportError:
-    from parser.enrollment_parser import EnrollmentParser  # type: ignore
+# Ensure project root is in path so 'parser' module can be found
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+
+from parser.enrollment_parser import EnrollmentParser
 
 
 def main():
+    # Skip header line
+    first_line = sys.stdin.readline()
+    # Process the rest
     for line in sys.stdin:
         parsed = EnrollmentParser.parse(line)
         if not parsed:

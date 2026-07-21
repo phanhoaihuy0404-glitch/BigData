@@ -17,10 +17,10 @@ set OUTPUT_DIR=%2
 if "%OUTPUT_DIR%"=="" set OUTPUT_DIR=output/job_output
 
 set MAPPER_SCRIPT=%3
-if "%MAPPER_SCRIPT%"=="" set MAPPER_SCRIPT=mapper/semester_count.py
+if "%MAPPER_SCRIPT%"=="" set MAPPER_SCRIPT=job/job/semester_count/mapper.py
 
 set REDUCER_SCRIPT=%4
-if "%REDUCER_SCRIPT%"=="" set REDUCER_SCRIPT=reducer/semester_count.py
+if "%REDUCER_SCRIPT%"=="" set REDUCER_SCRIPT=job/job/semester_count/reducer.py
 
 echo ============================================
 echo Hadoop Streaming Job

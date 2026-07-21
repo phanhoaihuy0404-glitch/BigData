@@ -1,33 +1,15 @@
 #!/usr/bin/env python3
-"""reducer/course_performance_analytics.py
+"""
+Reducer for Course performance analytics (multi-metrics).
 
-Hadoop Streaming - Course performance analytics (multi-metrics)
-
-Input:
-  course_id\ttotal_score,1,pass_flag,letter_grade
-
-Reducer aggregates per course_id:
-- total_score_sum (float)
-- total_students (int)
-- pass_count (int)
-- letter grade distribution counts (dict)
-
-Output per course (when key changes):
-  course_id\tAVG_TOTAL:{avg:.2f},PASS_RATE:{pass_rate:.2%},GRADES:{...}
-
-Where GRADES includes counts for each letter observed, e.g.
-  A:12,B:7,C:3
-
-Assumptions:
-- Input sorted by course_id
-- Robust parsing using try/except
+Input : course_id<TAB>total_score,1,pass_flag,letter_grade
+Output: course_id<TAB>AVG_TOTAL:<avg>,PASS_RATE:<rate>,GRADES:<A:count,B:count,...>
 """
 
 import sys
 
 
 def format_grades(grades_dict: dict) -> str:
-    # Deterministic order for easier checking
     letters = sorted(grades_dict.keys())
     return ",".join([f"{l}:{grades_dict[l]}" for l in letters])
 
@@ -58,7 +40,6 @@ def main():
 
         try:
             total_score = float(score_str)
-            # one_str should be "1"
             cnt = int(one_str)
             pass_flag = int(pass_str)
         except (ValueError, TypeError):
@@ -68,7 +49,6 @@ def main():
             current_course = course_id
 
         if course_id != current_course:
-            # emit stats for previous course
             avg_total = (total_score_sum / total_students) if total_students > 0 else 0.0
             pass_rate = (pass_count / total_students) if total_students > 0 else 0.0
             grades_part = format_grades(grade_counts)
