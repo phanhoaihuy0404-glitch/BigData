@@ -9,10 +9,10 @@ Output: course_id<TAB>midterm_score,1
 import sys
 import os
 
-# Ensure project root is in path so 'parser' module can be found
+# Ensure project root is in path so 'parser_1' module can be found
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
-from parser.enrollment_parser import EnrollmentParser
+from parser_1.csv_parser import parse_enrollment
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
     first_line = sys.stdin.readline()
     # Process the rest
     for line in sys.stdin:
-        parsed = EnrollmentParser.parse(line)
+        parsed = parse_enrollment(line)
         if not parsed:
             continue
 
