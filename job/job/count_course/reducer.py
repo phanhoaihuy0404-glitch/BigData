@@ -1,12 +1,10 @@
 import sys
 
-
 def emit(key, value):
     print(f"{key}\t{value}")
 
 
 def main():
-
     current_key = None
     current_count = 0
 
@@ -19,7 +17,10 @@ def main():
 
         key, value = line.split("\t")
 
-        value = int(value)
+        try:
+            value = int(value)
+        except ValueError:
+            continue
 
         if current_key is None:
 
