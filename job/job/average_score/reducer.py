@@ -27,26 +27,35 @@ def main():
         if len(parts) != 2:
             continue
 
+
         course_id, score_str = parts
+
         try:
             score = float(score_str)
         except ValueError:
             continue
 
+        if score < 0 or score > 10:
+            continue
+    
+
         if current_course is None:
             current_course = course_id
             sum_scores = score
             count = 1
+            
         elif course_id == current_course:
             sum_scores += score
             count += 1
+
         else:
             # Emit average for previous course
-            avg = round(sum_scores / count, 2) if count > 0 else 0.0
+            avg = round(sum_scores / count, 2)
             emit(current_course, avg)
             current_course = course_id
             sum_scores = score
             count = 1
+
 
     # Emit last course
     if current_course is not None and count > 0:
