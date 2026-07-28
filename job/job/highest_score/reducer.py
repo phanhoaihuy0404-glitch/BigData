@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-"""
-Reducer for finding the highest score per course.
-
-Input : CourseID<TAB>TotalScore   (from mapper output, sorted by CourseID)
-Output: CourseID<TAB>HighestScore
-"""
-
 import sys
 
 
@@ -15,7 +7,7 @@ def emit(key, value):
 
 def main():
     current_course = None
-    max_score = float("-inf")
+    max_score = float(-1)
 
     for line in sys.stdin:
         line = line.strip()
@@ -27,6 +19,7 @@ def main():
             continue
 
         course_id, score_str = parts
+        
         try:
             score = float(score_str)
         except ValueError:

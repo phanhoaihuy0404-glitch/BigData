@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-"""
-Mapper for finding the highest score per course.
-
-Input : CSV line from Enrollment.csv (header skipped automatically)
-Output: CourseID<TAB>TotalScore
-"""
-
 import sys
 import os
 
