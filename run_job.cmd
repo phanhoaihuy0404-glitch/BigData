@@ -213,7 +213,8 @@ if errorlevel 1 (
     exit /b 1
 )
 
-
+REM Dọn file rác csv_parser.py được Hadoop copy tạm vào thư mục job
+if exist "csv_parser.py" del /q "csv_parser.py"
 
 REM Return project root
 
