@@ -25,13 +25,9 @@ PROC_DIR = Path("data/processed")
 
 # Mapping: collection name → CSV filename
 COLLECTIONS = [
-    "Department",
-    "Class",
-    "Teacher",
     "Student",
     "Course",
     "Enrollment",
-    "Attendance",
 ]
 
 

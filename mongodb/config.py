@@ -2,4 +2,4 @@
 MONGO_URI = "mongodb://localhost:27017/"
 
 # Target database name
-DATABASE_NAME = "StudentManagementDB"
+DATABASE_NAME = "StudentManagementBigData"
