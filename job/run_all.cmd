@@ -38,7 +38,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 1: semester_count - Count students per semester
-REM ============================================================================
 echo [1/10] Running semester_count ...
 cd /d "%JOB_DIR%\semester_count"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\semester_count.txt"
@@ -52,7 +51,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 2: count_course - Count students per course
-REM ============================================================================
 echo [2/10] Running count_course ...
 cd /d "%JOB_DIR%\count_course"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\count_course.txt"
@@ -66,7 +64,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 3: average_score - Average score per course
-REM ============================================================================
 echo [3/10] Running average_score ...
 cd /d "%JOB_DIR%\average_score"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\average_score.txt"
@@ -80,7 +77,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 4: grade_distribution - Grade distribution per course
-REM ============================================================================
 echo [4/10] Running grade_distribution ...
 cd /d "%JOB_DIR%\grade_distribution"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\grade_distribution.txt"
@@ -94,7 +90,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 5: highest_score - Highest score per course
-REM ============================================================================
 echo [5/10] Running highest_score ...
 cd /d "%JOB_DIR%\highest_score"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\highest_score.txt"
@@ -106,26 +101,29 @@ if %ERRORLEVEL% equ 0 (
 cd /d "%JOB_DIR%"
 echo.
 
+
 REM ============================================================================
 REM  JOB 6: top_n_course - Top N courses by enrollment
-REM ============================================================================
+
 echo [6/10] Running top_n_course ...
+
 cd /d "%JOB_DIR%\top_n_course"
-type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\top_n_course_raw.txt"
+
+"%PYTHON%" find_top_n.py ^
+"%OUTPUT_DIR%\count_course" ^
+"%OUTPUT_DIR%\top_n_course_top10.txt"
+
 if %ERRORLEVEL% equ 0 (
-    echo   [OK] top_n_course reducer done
-    REM Post-process: find top 10
-    "%PYTHON%" find_top_n.py "%OUTPUT_DIR%\top_n_course_raw.txt" 10 > "%OUTPUT_DIR%\top_n_course_top10.txt"
-    echo   [OK] Top 10 extracted
+    echo   [OK] Top N extracted
 ) else (
     echo   [FAIL] top_n_course failed
 )
+
 cd /d "%JOB_DIR%"
 echo.
 
 REM ============================================================================
 REM  JOB 7: avg_midterm_per_course - Average midterm score per course
-REM ============================================================================
 echo [7/10] Running avg_midterm_per_course ...
 cd /d "%JOB_DIR%\avg_midterm_per_course"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\avg_midterm_per_course.txt"
@@ -139,7 +137,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 8: course_performance_analytics - Course performance multi-metrics
-REM ============================================================================
 echo [8/10] Running course_performance_analytics ...
 cd /d "%JOB_DIR%\course_performance_analytics"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\course_performance_analytics.txt"
@@ -153,7 +150,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 9: lowest_score_per_course - Lowest score per course
-REM ============================================================================
 echo [9/10] Running lowest_score_per_course ...
 cd /d "%JOB_DIR%\lowest_score_per_course"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\lowest_score_per_course.txt"
@@ -167,7 +163,6 @@ echo.
 
 REM ============================================================================
 REM  JOB 10: pass_fail_per_course - Pass/Fail statistics per course
-REM ============================================================================
 echo [10/10] Running pass_fail_per_course ...
 cd /d "%JOB_DIR%\pass_fail_per_course"
 type "%INPUT_FILE%" | "%PYTHON%" mapper.py 2>nul | %SORT_CMD% | "%PYTHON%" reducer.py > "%OUTPUT_DIR%\pass_fail_per_course.txt"
@@ -181,7 +176,6 @@ echo.
 
 REM ============================================================================
 REM  Summary
-REM ============================================================================
 echo ===================================================
 echo  All jobs completed!
 echo  Output files are in: %OUTPUT_DIR%
