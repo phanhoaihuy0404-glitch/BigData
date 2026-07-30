@@ -27,7 +27,7 @@ def export_collection(db, collection_name):
 
     dataframe.to_csv(output_file, index=False)
 
-    print(f"✓ {len(dataframe)} rows exported")
+    print(f"[OK] {len(dataframe)} rows exported")
 
     return len(dataframe)
 
