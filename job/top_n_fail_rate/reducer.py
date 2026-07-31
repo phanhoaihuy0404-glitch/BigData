@@ -7,6 +7,8 @@ def emit(course_id, fail_rate):
 
 def main():
 
+    top_n = int(sys.argv[1])
+
     records = []
 
     for line in sys.stdin:
@@ -32,7 +34,7 @@ def main():
 
     records.sort(key=lambda x: x[1], reverse=True)
 
-    for course_id, fail_rate in records:
+    for course_id, fail_rate in records[:top_n]:
 
         emit(course_id, fail_rate)
 

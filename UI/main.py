@@ -19,7 +19,7 @@ OUTPUT_DIR = os.path.join(PROJECT_ROOT, "output")
 JOB_NAMES = {
     "count_course": "Đếm số lượng sinh viên theo môn học",
     "students_by_course_and_score_range": "Tìm sinh viên theo môn học và khoảng điểm",
-    "top_n_courses_by_enrollment": "Top N môn học theo số lượng sinh viên đăng ký"
+    "top_n_courses_by_enrollment": "Top N môn học có số lượng sinh viên đăng ký nhiều nhất"
 }
 
 
@@ -57,11 +57,12 @@ def run_job(job_name, arguments=None):
         arguments = []
 
     if job_name == "students_by_course_and_score_range":
-
         command = ["run_job2.cmd", job_name] + arguments
 
+    elif job_name == "top_n_courses_by_enrollment":
+        command = ["run_top_n.cmd", job_name] + arguments
+        
     else:
-
         command = ["run_job.cmd", job_name]
 
     result = subprocess.run(
@@ -108,6 +109,14 @@ def load_result(job_name):
                 names=["StudentID", "LastName", "FirstName"]
             )
 
+        elif job_name == "top_n_courses_by_enrollment":
+
+            temp = pd.read_csv(
+                file,
+                sep="\t",
+                header=None,
+                names=["CourseID","StudentCount"]
+            )
         else:
 
             temp = pd.read_csv(
@@ -258,6 +267,12 @@ if selected_job:
 
             st.dataframe(df, use_container_width=True)
 
+
+        if selected_job == "top_n_courses_by_enrollment":
+ 
+            st.sidebar.divider()
+
+            top_n = st.sidebar.number_input("Số lượng môn học", min_value=1, max_value=30, value=10, step=1)
         # Default
         else:
 
