@@ -26,7 +26,7 @@ if "%1"=="" (
     echo Usage:
     echo run_job2.cmd ^<job_name^> [arguments]
 
-    pause
+    REM pause
     exit /b 1
 
 )
@@ -90,7 +90,7 @@ if not exist "%JOB_DIR%\mapper.py" (
 
     echo mapper.py not found
 
-    pause
+    REM pause
     exit /b 1
 
 )
@@ -100,7 +100,7 @@ if not exist "%JOB_DIR%\reducer.py" (
 
     echo reducer.py not found
 
-    pause
+    REM pause
     exit /b 1
 
 )
@@ -126,7 +126,7 @@ if errorlevel 1 (
 
     echo Export MongoDB failed
 
-    pause
+    REM pause
     exit /b 1
 
 )
@@ -224,7 +224,7 @@ cd /d "%JOB_DIR%"
 
 
 
-hadoop jar "%HADOOP_HOME%\share\hadoop\tools\lib\hadoop-streaming-3.3.6.jar" ^
+call hadoop jar "%HADOOP_HOME%\share\hadoop\tools\lib\hadoop-streaming-3.3.6.jar" ^
 -file mapper.py ^
 -file reducer.py ^
 -file "%PROJECT_ROOT%\parser_1\csv_parser.py" ^
@@ -241,7 +241,7 @@ if errorlevel 1 (
 
     cd /d "%PROJECT_ROOT%"
 
-    pause
+    REM pause
 
     exit /b 1
 
@@ -316,7 +316,7 @@ echo ============================================================
 
 
 
-pause
+REM pause
 
 
 endlocal

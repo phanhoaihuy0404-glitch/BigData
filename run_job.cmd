@@ -14,7 +14,7 @@ REM ============================================================
 
 if "%1"=="" (
     echo Usage: run_job.cmd ^<job_name^>
-    pause
+    REM pause
     exit /b 1
 )
 
@@ -59,7 +59,7 @@ REM ============================================================
 if not exist "%JOB_DIR%\mapper.py" (
     echo.
     echo [FAIL] mapper.py not found
-    pause
+    REM pause
     exit /b 1
 )
 
@@ -67,7 +67,7 @@ if not exist "%JOB_DIR%\mapper.py" (
 if not exist "%JOB_DIR%\reducer.py" (
     echo.
     echo [FAIL] reducer.py not found
-    pause
+    REM pause
     exit /b 1
 )
 
@@ -89,7 +89,7 @@ echo ============================================================
 if errorlevel 1 (
     echo.
     echo [FAIL] MongoDB export failed
-    pause
+    REM pause
     exit /b 1
 )
 
@@ -124,7 +124,7 @@ call hdfs dfs -put "%LOCAL_INPUT%" /input
 if errorlevel 1 (
     echo.
     echo [FAIL] Upload HDFS failed
-    pause
+    REM pause
     exit /b 1
 )
 
@@ -193,7 +193,7 @@ cd
 
 
 
-hadoop jar "%HADOOP_HOME%\share\hadoop\tools\lib\hadoop-streaming-3.3.6.jar" ^
+call hadoop jar "%HADOOP_HOME%\share\hadoop\tools\lib\hadoop-streaming-3.3.6.jar" ^
 -file mapper.py ^
 -file reducer.py ^
 -file "%PROJECT_ROOT%\parser_1\csv_parser.py" ^
@@ -209,7 +209,7 @@ if errorlevel 1 (
 
     cd /d "%PROJECT_ROOT%"
 
-    pause
+    REM pause
     exit /b 1
 )
 
@@ -246,7 +246,7 @@ call hdfs dfs -get %HDFS_OUTPUT%/* "%LOCAL_OUTPUT%"
 if errorlevel 1 (
     echo.
     echo [FAIL] Download result failed
-    pause
+    REM pause
     exit /b 1
 )
 
@@ -285,6 +285,6 @@ echo ============================================================
 
 
 
-pause
+REM pause
 
 endlocal
