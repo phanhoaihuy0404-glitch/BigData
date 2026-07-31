@@ -1,52 +1,60 @@
-#!/usr/bin/env python3
-"""
-Reducer for Pass/Fail statistics per course.
-
-Input : course_id<TAB>Pass  or  course_id<TAB>Fail   (sorted by course_id)
-Output: course_id<TAB>Pass:<pass_count>,Fail:<fail_count>
-"""
-
 import sys
 
 
+def emit(course_id, passed, failed):
+    print(f"{course_id}\t{passed}\t{failed}")
+
+
 def main():
+
     current_course = None
+
     pass_count = 0
     fail_count = 0
 
-    for raw in sys.stdin:
-        raw = raw.strip()
-        if not raw:
+    for line in sys.stdin:
+
+        line = line.strip()
+
+        if not line:
             continue
 
-        try:
-            course_id, label = raw.split("\t", 1)
-        except ValueError:
-            continue
+        course_id, status = line.split("\t")
 
-        label = label.strip()
         if current_course is None:
+
             current_course = course_id
 
-        if course_id != current_course:
-            sys.stdout.write(
-                f"{current_course}\tPass:{pass_count},Fail:{fail_count}\n"
-            )
-            current_course = course_id
-            pass_count = 0
-            fail_count = 0
+            if status == "PASS":
+                pass_count = 1
+                fail_count = 0
+            else:
+                pass_count = 0
+                fail_count = 1
 
-        if label == "Pass":
-            pass_count += 1
-        elif label == "Fail":
-            fail_count += 1
+        elif course_id == current_course:
+
+            if status == "PASS":
+                pass_count += 1
+            else:
+                fail_count += 1
+
+        else:
+
+            emit(current_course, pass_count, fail_count)
+
+            current_course = course_id
+
+            if status == "PASS":
+                pass_count = 1
+                fail_count = 0
+            else:
+                pass_count = 0
+                fail_count = 1
 
     if current_course is not None:
-        sys.stdout.write(
-            f"{current_course}\tPass:{pass_count},Fail:{fail_count}\n"
-        )
+        emit(current_course, pass_count, fail_count)
 
 
 if __name__ == "__main__":
     main()
-

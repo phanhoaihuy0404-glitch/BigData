@@ -1,38 +1,38 @@
-#!/usr/bin/env python3
-"""
-Mapper for Pass/Fail statistics per course.
-
-Input : CSV line from Enrollment.csv
-Output: course_id<TAB>Pass  or  course_id<TAB>Fail
-"""
-
 import sys
-import os
 
-# Ensure project root is in path so 'parser_1' module can be found
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
+from csv_parser import parse_enrollment
 
-from parser_1.csv_parser import parse_enrollment
+
+def emit(key, value):
+    print(f"{key}\t{value}")
 
 
 def main():
+
     # Skip header line
     first_line = sys.stdin.readline()
+
     # Process the rest
     for line in sys.stdin:
-        parsed = parse_enrollment(line)
-        if not parsed:
+
+        record = parse_enrollment(line)
+
+        if record is None:
             continue
 
-        course_id = parsed.get("course_id")
-        total_score = parsed.get("total_score")
-        if course_id is None or total_score is None:
+        course_id = record["CourseID"]
+        total_score = record["TotalScore"]
+
+        try:
+            total_score = float(total_score)
+        except ValueError:
             continue
 
-        label = "Pass" if total_score >= 4.0 else "Fail"
-        sys.stdout.write(f"{course_id}\t{label}\n")
+        if total_score >= 5:
+            emit(course_id, "PASS")
+        else:
+            emit(course_id, "FAIL")
 
 
 if __name__ == "__main__":
     main()
-
