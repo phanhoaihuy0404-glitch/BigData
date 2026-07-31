@@ -20,6 +20,7 @@ def main():
         grade, value = line.split("\t", 1)
         value = int(value)
 
+        
         if current_grade == grade:
             count += value
         else:

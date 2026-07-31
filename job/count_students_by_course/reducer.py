@@ -23,12 +23,10 @@ def main():
             continue
 
         if current_key is None:
-
             current_key = key
             current_count = value
 
         elif key == current_key:
-
             current_count += value
 
         else:
