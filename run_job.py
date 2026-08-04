@@ -168,15 +168,16 @@ def main():
     part_files = sorted(local_output.glob("part-*"))
     if part_files:
         print(f"Result (tat ca {len(part_files)} file part-*):\n")
+        print("="*60)
         for f in part_files:
-            print(f"--- {f.name} ---")
+            print(f"{f.name}")
             print(f.read_text(encoding="utf-8", errors="replace"))
     else:
         print("[FAIL] khong tim thay file part-* nao")
 
-    print("\n" + "=" * 60)
+    print("\n" + "_" * 60)
     print("Finished")
-    print("=" * 60)
+    print("_" * 60)
 
 
 if __name__ == "__main__":
