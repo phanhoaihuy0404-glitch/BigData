@@ -13,7 +13,7 @@ PROJECT_ROOT = Path(r"C:\Users\AdMin\BigDataTest")
 
 STREAMING_JAR = HADOOP_HOME / "share" / "hadoop" / "tools" / "lib" / "hadoop-streaming-3.3.6.jar"
 
-DEFAULT_NUM_REDUCERS = 3
+DEFAULT_NUM_REDUCERS = 2
 
 
 def build_env():
