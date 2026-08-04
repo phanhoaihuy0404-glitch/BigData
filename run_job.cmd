@@ -20,10 +20,10 @@ if "%1"=="" (
 
 set JOB_NAME=%1
 
-REM Tham so thu 2 (tuy chon): so luong reducer. Mac dinh la 3 neu khong truyen.
+REM Tham so thu 2 (tuy chon): so luong reducer. Mac dinh la 2 neu khong truyen.
 REM Vi du: run_job.cmd count_students_by_course 5
 set NUM_REDUCERS=%2
-if "%NUM_REDUCERS%"=="" set NUM_REDUCERS=3
+if "%NUM_REDUCERS%"=="" set NUM_REDUCERS=2
 
 
 REM ============================================================

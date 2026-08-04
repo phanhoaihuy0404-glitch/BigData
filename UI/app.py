@@ -23,7 +23,6 @@ JOB_NAMES = {
     "pass_fail_per_course": "Thống kê số lượng Đạt / Trượt theo môn học",
     "top_n_fail_rate": "Top N môn học có tỷ lệ trượt cao nhất",
     "students_by_course_and_score_range": "Tìm sinh viên theo môn học và khoảng điểm",
-    "top_n_courses_by_enrollment": "Top N môn học có số lượng sinh viên đăng ký nhiều nhất"
 }
 
 
@@ -57,8 +56,6 @@ def get_jobs():
 
 # Run Hadoop Job
 
-# Run Hadoop Job
-
 def run_job(job_name, arguments=None):
 
     if arguments is None:
@@ -70,19 +67,6 @@ def run_job(job_name, arguments=None):
 
         result = subprocess.run(command, cwd=PROJECT_ROOT, capture_output=True, text=True, shell=True)
 
-    elif job_name == "top_n_courses_by_enrollment":
-
-        result = subprocess.run(["run_job.cmd", "count_students_by_course"], cwd=PROJECT_ROOT, capture_output=True, text=True, shell=True)
-
-        if result.returncode != 0:
-            return result
-
-        os.makedirs(os.path.join(OUTPUT_DIR, "top_n_courses_by_enrollment"), exist_ok=True)
-
-        command = f'hadoop fs -cat /output/count_students_by_course/part-00000 | py "{PROJECT_ROOT}\\job\\top_n_courses_by_enrollment\\find_top_n.py" {arguments[0]} > "{OUTPUT_DIR}\\top_n_courses_by_enrollment\\part-00000"'
-
-        result = subprocess.run(command, cwd=PROJECT_ROOT, capture_output=True, text=True, shell=True)
-
     elif job_name == "top_n_fail_rate":
 
         command = ["run_job_top_n_fail_rate.cmd"] + arguments
@@ -91,7 +75,7 @@ def run_job(job_name, arguments=None):
 
     else:
 
-        command = ["run_job.cmd", job_name]
+        command = ["run_job.py", job_name]
 
         result = subprocess.run(command, cwd=PROJECT_ROOT, capture_output=True, text=True, shell=True)
 
@@ -127,9 +111,6 @@ else:
     selected_job = None
 
     st.sidebar.warning("Không tìm thấy chức năng.")
-
-
-# Search Parameters
 
 
 # Search Parameters
@@ -171,15 +152,6 @@ if selected_job == "students_by_course_and_score_range":
     end_score = st.sidebar.number_input("Điểm kết thúc", min_value=0.0, max_value=10.0, value=10.0, step=1.0)
 
 
-elif selected_job == "top_n_courses_by_enrollment":
-
-    st.sidebar.divider()
-
-    st.sidebar.subheader("Điều kiện tìm kiếm")
-
-    top_n = st.sidebar.number_input("Chọn Top N môn học", min_value=1, max_value=30, value=10, step=1)
-
-
 elif selected_job == "top_n_fail_rate":
 
     st.sidebar.divider()
@@ -209,10 +181,6 @@ if run_button:
 
                 result = run_job(selected_job, [course_id, str(start_score), str(end_score)])
 
-            elif selected_job == "top_n_courses_by_enrollment":
-
-                result = run_job(selected_job, [str(top_n)])
-
             elif selected_job == "top_n_fail_rate":
 
                 result = run_job(selected_job, [str(top_n)])
@@ -234,8 +202,6 @@ if run_button:
             if result.stderr:
 
                 st.code(result.stderr)
-# Read Hadoop Output
-
 # Read Hadoop Output
 
 def load_result(job_name):
@@ -275,10 +241,6 @@ def load_result(job_name):
 
             temp = pd.read_csv(file, sep="\t", header=None, names=["StudentID", "LastName", "FirstName"])
 
-        elif job_name == "top_n_courses_by_enrollment":
-
-            temp = pd.read_csv(file, sep="\t", header=None, names=["CourseID", "StudentCount"])
-
         else:
 
             temp = pd.read_csv(file, sep="\t", header=None, names=["Key", "Value"])
@@ -289,8 +251,6 @@ def load_result(job_name):
 
     return df
 
-
-# Main Content
 
 # Main Content
 
@@ -420,23 +380,6 @@ if selected_job:
             st.subheader("📋 Danh sách sinh viên")
 
             st.dataframe(df, use_container_width=True)
-
-
-        # Top N Courses By Enrollment
-
-        elif selected_job == "top_n_courses_by_enrollment":
-
-            st.metric("Số môn học", len(df))
-
-            st.subheader("📋 Top môn học có số lượng sinh viên đăng ký nhiều nhất")
-
-            st.dataframe(df, use_container_width=True)
-
-            st.subheader("📈 Biểu đồ")
-
-            chart_df = df.set_index("CourseID")
-
-            st.bar_chart(chart_df)
 
 
         # Default
