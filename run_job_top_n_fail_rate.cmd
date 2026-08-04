@@ -109,6 +109,17 @@ echo ============================================================
 
 cd /d "%JOB_DIR%"
 
+REM QUAN TRONG: Job nay PHAI dung 1 reducer (khong duoc tang len nhieu reducer).
+REM Ly do: day la job Top-N TOAN CUC (chon N khoa hoc co ty le truot cao nhat
+REM trong TAT CA khoa hoc). Neu dung nhieu reducer, moi reducer chi thay duoc
+REM mot phan cac CourseID (do Hadoop hash-partition theo key), va se tu chon
+REM "Top N cua rieng no" -> ket qua cuoi cung (gop nhieu part-* lai) SE SAI,
+REM co the thieu khoa hoc dang le phai nam trong Top N that.
+REM Neu muon dung nhieu reducer o buoc nay, phai lam theo kieu 2 giai doan:
+REM   (1) nhieu reducer tinh Top-N CUC BO tren tung phan du lieu
+REM   (2) mot buoc merge/reduce cuoi cung (1 reducer hoac script Python cuc bo,
+REM       giong nhu job/top_n_courses_by_enrollment/find_top_n.py) de gop cac
+REM       Top-N cuc bo lai va chon ra Top-N dung.
 call hadoop jar "%HADOOP_HOME%\share\hadoop\tools\lib\hadoop-streaming-3.3.6.jar" ^
 -D mapreduce.job.reduces=1 ^
 -file mapper.py ^

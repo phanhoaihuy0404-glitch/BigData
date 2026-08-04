@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys
 
 
@@ -12,7 +11,6 @@ def emit(student_id, last_name, first_name):
 
 
 def process_student(student_id, values, course_id, start_score, end_score):
-
     last_name = None
     first_name = None
 
@@ -94,7 +92,6 @@ def main():
 
         # Same StudentID
         if current_student_id == student_id:
-
             values.append(value)
 
 

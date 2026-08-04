@@ -20,6 +20,11 @@ if "%1"=="" (
 
 set JOB_NAME=%1
 
+REM Tham so thu 2 (tuy chon): so luong reducer. Mac dinh la 3 neu khong truyen.
+REM Vi du: run_job.cmd count_students_by_course 5
+set NUM_REDUCERS=%2
+if "%NUM_REDUCERS%"=="" set NUM_REDUCERS=3
+
 
 REM ============================================================
 REM Configuration
@@ -198,6 +203,7 @@ echo Mapper   : %JOB_DIR%\mapper.py
 echo Reducer  : %JOB_DIR%\reducer.py
 echo Input    : %HDFS_INPUT%
 echo Output   : %HDFS_OUTPUT%
+echo Reducers : %NUM_REDUCERS%
 echo.
 
 
@@ -212,6 +218,7 @@ cd
 
 
 call hadoop jar "%HADOOP_HOME%\share\hadoop\tools\lib\hadoop-streaming-3.3.6.jar" ^
+-D mapreduce.job.reduces=%NUM_REDUCERS% ^
 -file mapper.py ^
 -file reducer.py ^
 -file "%PROJECT_ROOT%\parser_1\csv_parser.py" ^
@@ -282,10 +289,13 @@ echo ============================================================
 
 if exist "%LOCAL_OUTPUT%\part-00000" (
 
-    echo Result:
+    echo Result ^(tat ca %NUM_REDUCERS% file part-*^):
     echo.
 
-    type "%LOCAL_OUTPUT%\part-00000"
+    for %%F in ("%LOCAL_OUTPUT%\part-*") do (
+        echo --- %%~nxF ---
+        type "%%F"
+    )
 
 
 ) else (
