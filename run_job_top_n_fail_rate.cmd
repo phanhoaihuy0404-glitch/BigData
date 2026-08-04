@@ -14,6 +14,10 @@ REM ============================================================
 
 setlocal
 
+REM Resolve project root relative to this script so it works in any workspace path.
+set PROJECT_ROOT=%~dp0
+if "%PROJECT_ROOT:~-1%"=="\" set PROJECT_ROOT=%PROJECT_ROOT:~0,-1%
+
 REM ============================================================
 REM Check Parameter
 REM ============================================================
@@ -37,8 +41,6 @@ set JAVA_HOME=D:\Java11
 set PYTHON=C:\Users\AdMin\AppData\Local\Python\pythoncore-3.14-64\python.exe
 
 set PATH=%HADOOP_HOME%\bin;%JAVA_HOME%\bin;%PATH%
-
-set PROJECT_ROOT=C:\Users\AdMin\BigDataTest
 
 set JOB_NAME=top_n_fail_rate
 set JOB_DIR=%PROJECT_ROOT%\job\%JOB_NAME%
@@ -72,16 +74,25 @@ echo ============================================================
 echo Kiem tra input cua Job2: %HDFS_INPUT%
 echo ============================================================
 
-call hdfs dfs -test -e %HDFS_INPUT%
+REM Lưu ý: hdfs.cmd trên Windows thường không trả về đúng exit code cho
+REM `-test -e`, nên không dùng `if errorlevel 1` mà kiểm tra qua output của `-ls`.
+set HDFS_INPUT_FOUND=0
 
-if errorlevel 1 (
+call hdfs dfs -ls %HDFS_INPUT% > "%TEMP%\hdfs_ls_check.txt" 2>&1
+for /f "tokens=*" %%L in ('type "%TEMP%\hdfs_ls_check.txt"') do (
+    echo %%L | findstr /C:"%HDFS_INPUT%" >nul
+    if not errorlevel 1 set HDFS_INPUT_FOUND=1
+)
+del "%TEMP%\hdfs_ls_check.txt" >nul 2>&1
+
+if "%HDFS_INPUT_FOUND%"=="0" (
     echo.
     echo LOI: Khong tim thay %HDFS_INPUT% tren HDFS.
     echo Hay chay Job1 ^(pass_fail_per_course^) truoc khi chay Job2.
     exit /b 1
 )
 
-call hdfs dfs -ls %HDFS_INPUT%
+echo [OK] Input cua Job2 ton tai tren HDFS.
 
 REM ============================================================
 REM Remove Old Output
